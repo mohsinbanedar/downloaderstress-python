@@ -1,0 +1,46 @@
+{
+  "cluster_name": "cloudera-prod",
+  "endpoints": {
+    "spark_history_server": "http://spark-history:18080",
+    "impala_daemon": "http://impala-daemon:25000",
+    "hive_server": "http://hive-server:10002"
+  },
+  "credentials": {
+    "username": "readonly",
+    "password": "changeme",
+    "kerberos_principal": "readonly@EXAMPLE.COM"
+  },
+  "metric_targets": {
+    "spark_applications": true,
+    "spark_executors": true,
+    "impala_metrics": true,
+    "hive_jmx": true
+  },
+  "checks": [
+    {
+      "name": "Spark apps reachable",
+      "kind": "status_ok",
+      "target": "spark-history",
+      "warning_threshold": 1,
+      "critical_threshold": 0,
+      "description": "Ensures Spark history server API is reachable."
+    },
+    {
+      "name": "Impala metrics payload",
+      "kind": "payload_size",
+      "target": "impala-daemon",
+      "warning_threshold": 1,
+      "critical_threshold": 0,
+      "description": "Validates that Impala metrics payload is populated."
+    },
+    {
+      "name": "Hive JMX payload",
+      "kind": "payload_size",
+      "target": "hive-server",
+      "warning_threshold": 1,
+      "critical_threshold": 0,
+      "description": "Validates that Hive JMX endpoint returns metrics."
+    }
+  ],
+  "output_path": "observability_output"
+}
